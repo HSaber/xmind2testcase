@@ -39,7 +39,7 @@ werkzeug_logger.setLevel(logging.DEBUG)
 UPLOAD_FOLDER = os.path.join(here, 'uploads')
 ALLOWED_EXTENSIONS = ['xmind']
 DEBUG = True
-DATABASE = os.path.join(here, 'data.db3')
+DATABASE = os.path.join(here, 'records')
 HOST = '0.0.0.0'
 
 # flask app
@@ -85,6 +85,7 @@ def insert_record(xmind_name, note=''):
     c = g.db.cursor()
     now = str(arrow.now())
     sql = "INSERT INTO records (name,create_on,note) VALUES (?,?,?)"
+
     c.execute(sql, (xmind_name, now, str(note)))
     g.db.commit()
 
@@ -136,6 +137,7 @@ def get_records(limit=8):
     short_name_length = 120
     c = g.db.cursor()
     sql = "select * from records where is_deleted<>1 order by id desc limit {}".format(int(limit))
+    print(sql)
     c.execute(sql)
     rows = c.fetchall()
 
