@@ -10,6 +10,7 @@ from os.path import join, exists
 from werkzeug.utils import secure_filename
 from xmind2testcase.zentao import xmind_to_zentao_csv_file
 from xmind2testcase.testlink import xmind_to_testlink_xml_file
+from xmind2testcase.tapd import xmind_to_tapd_csv_file
 from xmind2testcase.utils import get_xmind_testsuites, get_xmind_testcase_list
 from flask import Flask, request, send_from_directory, g, render_template, abort, redirect, url_for
 
@@ -255,6 +256,17 @@ def download_zentao_file(filename):
 
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
 
+@app.route('/<filename>/to/tapd')
+def download_tapd_file(filename):
+    full_path = join(app.config['UPLOAD_FOLDER'], filename)
+
+    if not exists(full_path):
+        abort(404)
+
+    tapd_csv_file = xmind_to_tapd_csv_file(full_path)
+    filename = os.path.basename(tapd_csv_file) if tapd_csv_file else abort(404)
+
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
 
 @app.route('/preview/<filename>')
 def preview_file(filename):

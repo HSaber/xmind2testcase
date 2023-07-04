@@ -4,6 +4,7 @@ import logging
 import sys
 from xmind2testcase.zentao import xmind_to_zentao_csv_file
 from xmind2testcase.testlink import xmind_to_testlink_xml_file
+from xmind2testcase.tapd import xmind_to_tapd_csv_file
 from xmind2testcase.utils import get_absolute_path, xmind_testcase_to_json_file
 from webtool.application import launch
 
@@ -21,7 +22,8 @@ using_doc = """
     
     Example:
      xmind2testcase /path/to/testcase.xmind        => output testcase.csv、testcase.xml、testcase.json
-     xmind2testcase /path/to/testcase.xmind -csv   => output testcase.csv
+     xmind2testcase /path/to/testcase.xmind -csvzentap   => output testcase.csv
+          xmind2testcase /path/to/testcase.xmind -csvtapd   => output testcase.csv
      xmind2testcase /path/to/testcase.xmind -xml   => output testcase.xml
      xmind2testcase /path/to/testcase.xmind -json  => output testcase.json
      xmind2testcase webtool                        => launch the web testcase conversion tool locally: 127.0.0.1:5001
@@ -41,20 +43,26 @@ def cli_main():
         elif len(sys.argv) == 3 and sys.argv[2] == '-xml':
             testlink_xml_file = xmind_to_testlink_xml_file(xmind_file)
             logging.info('Convert XMind file to testlink xml files successfully: %s', testlink_xml_file)
-        elif len(sys.argv) == 3 and sys.argv[2] == '-csv':
+        elif len(sys.argv) == 3 and sys.argv[2] == '-csvzentao':
             zentao_csv_file = xmind_to_zentao_csv_file(xmind_file)
             logging.info('Convert XMind file to zentao csv file successfully: %s', zentao_csv_file)
+        elif len(sys.argv) == 3 and sys.argv[2] == '-csvtapd':
+            tapd_csv_file = xmind_to_tapd_csv_file(xmind_file)
+            logging.info('Convert XMind file to tapd csv file successfully: %s', tapd_csv_file)
         else:
             testlink_json_file = xmind_testcase_to_json_file(xmind_file)
             testlink_xml_file = xmind_to_testlink_xml_file(xmind_file)
             zentao_csv_file = xmind_to_zentao_csv_file(xmind_file)
+            tapd_csv_file = xmind_to_tapd_csv_file(xmind_file)
             logging.info('Convert XMind file successfully: \n'
                          '1、 testcase json file(%s)\n'
                          '2、 testlink xml file(%s)\n'
-                         '3、 zentao csv file(%s)',
+                         '3、 zentao csv file(%s)\n',
+                         '4、 zentao csv file(%s)',
                          testlink_json_file,
                          testlink_xml_file,
-                         zentao_csv_file)
+                         zentao_csv_file,
+                         tapd_csv_file)
     elif len(sys.argv) > 1 and sys.argv[1] == 'webtool':
         if len(sys.argv) == 3:
             try:
