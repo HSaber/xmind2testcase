@@ -3,9 +3,7 @@
 import csv
 import logging
 import os
-import sys
-current_dir = os.path.dirname(__file__)
-sys.path.append(current_dir)
+
 from xmind2testcase.utils import get_xmind_testcase_list, get_absolute_path
 
 """
