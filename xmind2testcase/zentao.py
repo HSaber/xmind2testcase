@@ -4,7 +4,8 @@ import csv
 import logging
 import os
 from xmind2testcase.utils import get_xmind_testcase_list, get_absolute_path
-
+import sys
+sys.path.append('./xmind2testcase')
 """
 Convert XMind fie to Zentao testcase csv file 
 
