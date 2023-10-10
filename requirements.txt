@@ -1,0 +1,5 @@
+arrow==1.2.3
+Flask==2.3.2
+setuptools==65.5.0
+Werkzeug==2.3.6
+XMind==1.2.0
