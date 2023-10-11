@@ -18,8 +18,14 @@ def xmind_to_feishu_csv_file(xmind_file):
     logging.info('Start converting XMind file(%s) to feishu file...', xmind_file)
     testcases = get_xmind_testcase_list(xmind_file)
 
-    fileheader = ["所属模块", "用例标题", "前置条件", "步骤", "预期", "关键词", "优先级", "用例类型", "适用阶段"]
+#    fileheader = ["所属模块", "用例标题", "前置条件", "步骤", "预期", "关键词", "优先级", "用例类型", "适用阶段","负责人"]
+    fileheader = ["工作项类型","用例名称", "业务线","描述","前置条件",
+                  "执行步骤", "预期结果", "附件","标签", "步骤",
+                  "结果预期", "用例分级","关联需求","用例类型", "创建人",
+                  "优先级","关注人","拉群方式选择","流程角色","状态"]
+
     feishu_testcase_rows = [fileheader]
+    feishu_testcase_rows.append(['','','','','','','','','','','','','','','','','','','负责人',''])
     for testcase in testcases:
         row = gen_a_testcase_row(testcase)
         feishu_testcase_rows.append(row)
@@ -39,17 +45,26 @@ def xmind_to_feishu_csv_file(xmind_file):
 
 
 def gen_a_testcase_row(testcase_dict):
-    case_module = gen_case_module(testcase_dict['suite'])
-    case_title = testcase_dict['name']
+    case_title = gen_case_module(testcase_dict['suite'])+"-"+testcase_dict['name']
+    case_jobtype='默认测试用例类型'
+    case_business='交易'
+    case_description=''
     case_precontion = testcase_dict['preconditions']
     case_step, case_expected_result = gen_case_step_and_expected_result(testcase_dict['steps'])
-    case_keyword = ''
+    case_attach = ''
+    case_tag=''
     case_priority = gen_case_priority(testcase_dict['importance'])
     case_type = gen_case_type(testcase_dict['execution_type'])
-    case_apply_phase = '迭代测试'
-    row = [case_module, case_title, case_precontion, case_step, case_expected_result, case_keyword, case_priority, case_type, case_apply_phase]
+ #   case_type= '功能测试'
+    case_owner='胡欢'
+    case_story='15715591'
+    case_group='不拉群'
+    case_status='待评审'
+    row = [case_jobtype, case_title, case_business,case_description,case_precontion,
+           case_step,case_expected_result, case_attach,case_tag,case_step,
+           case_expected_result,case_priority, case_story, case_type,case_owner,
+           case_priority,case_owner,case_group,case_owner,case_status]
     return row
-
 
 def gen_case_module(module_name):
     if module_name:
@@ -74,19 +89,19 @@ def gen_case_step_and_expected_result(steps):
 
 
 def gen_case_priority(priority):
-    mapping = {1: '高', 2: '中', 3: '低'}
+    mapping = {1: 'P0', 2: 'P1', 3: 'P2'}
     if priority in mapping.keys():
         return mapping[priority]
     else:
-        return '中'
+        return 'P1'
 
 
 def gen_case_type(case_type):
-    mapping = {1: '手动', 2: '自动'}
+    mapping = {1: '功能用例', 2: '性能用例'}
     if case_type in mapping.keys():
         return mapping[case_type]
     else:
-        return '手动'
+        return '功能用例'
 
 
 if __name__ == '__main__':
