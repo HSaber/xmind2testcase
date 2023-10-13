@@ -1,4 +1,5 @@
 arrow==1.2.3
+<<<<<<< HEAD
 attrs==21.4.0
 certifi==2021.10.8
 charset-normalizer==2.0.12
@@ -34,3 +35,9 @@ Werkzeug==2.0.3
 XMind==1.2.0
 yarg==0.1.9
 zipp==3.6.0
+=======
+Flask==2.3.2
+setuptools==65.5.0
+Werkzeug==2.3.6
+XMind==1.2.0
+>>>>>>> 7e778288905a9f40b9dde7894018eca6aee1eac8
