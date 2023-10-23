@@ -8,6 +8,8 @@ import sqlite3
 from contextlib import closing
 from os.path import join, exists
 from werkzeug.utils import secure_filename
+import sys
+sys.path.append('./xmind2testcase')
 from xmind2testcase.feishu import xmind_to_feishu_csv_file
 from xmind2testcase.zentao import xmind_to_zentao_csv_file
 from xmind2testcase.testlink import xmind_to_testlink_xml_file

@@ -63,7 +63,7 @@ def gen_a_testcase_row(testcase_dict):
     case_type = gen_case_type(testcase_dict['execution_type'])
  #   case_type= '功能测试'
     case_group='不拉群'
-    case_status='待评审'
+    case_status='评审通过'
     row = [case_jobtype, case_title, case_business,case_description,case_precontion,
            case_step,case_expected_result, case_attach,case_tag,case_step,
            case_expected_result,case_priority, case_story, case_type,case_owner,
