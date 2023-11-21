@@ -53,7 +53,7 @@ def gen_a_testcase_row(testcase_dict):
         case_owner=''
     case_title = gen_case_module(testcase_dict['suite'])+">"+testcase_dict['name']
     case_jobtype='默认测试用例类型'
-    case_business='云卖单'
+    case_business=''
     case_description=''
     case_precontion = testcase_dict['preconditions']
     case_step, case_expected_result = gen_case_step_and_expected_result(testcase_dict['steps'])
