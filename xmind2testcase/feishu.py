@@ -19,7 +19,7 @@ def xmind_to_feishu_csv_file(xmind_file):
     testcases = get_xmind_testcase_list(xmind_file)
 
 #    fileheader = ["所属模块", "用例标题", "前置条件", "步骤", "预期", "关键词", "优先级", "用例类型", "适用阶段","负责人"]
-    fileheader = ["工作项类型","用例名称", "业务线","描述","前置条件","执行步骤", "预期结果", "附件","标签", "步骤","结果预期",
+    fileheader = ["测试用例类型","用例名称", "业务线","描述","前置条件","执行步骤", "预期结果", "附件","标签", "步骤","结果预期",
                   "用例分级","关联需求","用例类型", "创建人","优先级","关注人","拉群方式选择","流程角色","状态"]
 
     feishu_testcase_rows = [fileheader]
@@ -53,7 +53,7 @@ def gen_a_testcase_row(testcase_dict):
         case_owner=''
     case_title = gen_case_module(testcase_dict['suite'])+">"+testcase_dict['name']
     case_jobtype='默认测试用例类型'
-    case_business='云卖单'
+    case_business=''
     case_description=''
     case_precontion = testcase_dict['preconditions']
     case_step, case_expected_result = gen_case_step_and_expected_result(testcase_dict['steps'])
