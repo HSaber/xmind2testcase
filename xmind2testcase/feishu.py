@@ -19,11 +19,11 @@ def xmind_to_feishu_csv_file(xmind_file):
     testcases = get_xmind_testcase_list(xmind_file)
 
 #    fileheader = ["所属模块", "用例标题", "前置条件", "步骤", "预期", "关键词", "优先级", "用例类型", "适用阶段","负责人"]
-    fileheader = ["测试用例类型","用例名称", "业务线","描述","前置条件","执行步骤", "预期结果", "附件","标签", "步骤","结果预期",
-                  "用例分级","关联需求","用例类型", "创建人","优先级","关注人","拉群方式选择","流程角色","状态"]
+    fileheader = ["测试用例类型(template)","用例名称(name)", "业务线(business)","描述(description)","前置条件(field_f717b4)","执行步骤(field_023f96)", "预期结果(field_2c7371)", "附件(field_603db5)","标签(field_65e1cc)",
+                  "用例分级(field_ad0ad4)","关联需求(field_d73be1)","用例类型(field_e42a97)", "创建人(owner)","优先级(priority)","关注人(watchers)","拉群方式选择(group_type)","流程角色(role_owners)","当前状态(work_item_status)","自增数字(auto_number)","是否冻结(is_frozen)","当前状态开始时间(status_begin_time)"]
 
     feishu_testcase_rows = [fileheader]
-    feishu_testcase_rows.append(['','','','','','','','','','','','','','','','','','','负责人',''])
+    feishu_testcase_rows.append(['','','','','','','','','','','','','','','','','','','负责人(test_case_owner)','','',''])
     for testcase in testcases:
         row = gen_a_testcase_row(testcase)
         feishu_testcase_rows.append(row)
