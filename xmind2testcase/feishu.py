@@ -19,11 +19,13 @@ def xmind_to_feishu_csv_file(xmind_file):
     testcases = get_xmind_testcase_list(xmind_file)
 
 #    fileheader = ["所属模块", "用例标题", "前置条件", "步骤", "预期", "关键词", "优先级", "用例类型", "适用阶段","负责人"]
-    fileheader = ["测试用例类型(template)","用例名称(name)", "业务线(business)","描述(description)","前置条件(field_f717b4)","执行步骤(field_023f96)", "预期结果(field_2c7371)", "附件(field_603db5)","标签(field_65e1cc)",
-                  "用例分级(field_ad0ad4)","关联需求(field_d73be1)","用例类型(field_e42a97)", "创建人(owner)","优先级(priority)","关注人(watchers)","拉群方式选择(group_type)","流程角色(role_owners)","当前状态(work_item_status)","自增数字(auto_number)","是否冻结(is_frozen)","当前状态开始时间(status_begin_time)"]
+    fileheader = ["测试用例类型(template)","用例名称(name)", "业务线(business)","描述(description)","前置条件(field_f717b4)",
+                  "执行步骤(field_023f96)", "预期结果(field_2c7371)", "附件(field_603db5)","标签(field_65e1cc)","用例分级(field_ad0ad4)",
+                  "关联需求(field_d73be1)","用例类型(field_e42a97)", "创建人(owner)","优先级(priority)","关注人(watchers)","拉群方式选择(group_type)",
+                  "流程角色(role_owners)","当前状态(work_item_status)","自增数字(auto_number)","是否冻结(is_frozen)","当前状态开始时间(status_begin_time)"]
 
     feishu_testcase_rows = [fileheader]
-    feishu_testcase_rows.append(['','','','','','','','','','','','','','','','','','','负责人(test_case_owner)','','',''])
+    feishu_testcase_rows.append(['','','','','','','','','','','','','','','','','负责人(test_case_owner)','','','',''])
     for testcase in testcases:
         row = gen_a_testcase_row(testcase)
         feishu_testcase_rows.append(row)
@@ -64,10 +66,12 @@ def gen_a_testcase_row(testcase_dict):
  #   case_type= '功能测试'
     case_group='不拉群'
     case_status='评审通过'
+    case_auto_number=''
+    case_frozen=''
+    case_begin_time=''
     row = [case_jobtype, case_title, case_business,case_description,case_precontion,
-           case_step,case_expected_result, case_attach,case_tag,case_step,
-           case_expected_result,case_priority, case_story, case_type,case_owner,
-           case_priority,case_owner,case_group,case_owner,case_status]
+           case_step,case_expected_result, case_attach,case_tag,case_priority, case_story, case_type,case_owner,
+           case_priority,case_owner,case_group,case_owner,case_status,case_auto_number,case_frozen,case_begin_time]
     # logging.info('row : %s',row)
     return row
 
