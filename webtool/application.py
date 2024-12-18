@@ -9,8 +9,11 @@ from contextlib import closing
 from os.path import join, exists
 from werkzeug.utils import secure_filename
 import sys
+
+
 sys.path.append('./xmind2testcase')
 from xmind2testcase.feishu import xmind_to_feishu_csv_file
+from xmind2testcase.feishu_xlsx import xmind_to_feishu_xlsx_file
 from xmind2testcase.zentao import xmind_to_zentao_csv_file
 from xmind2testcase.testlink import xmind_to_testlink_xml_file
 from xmind2testcase.tapd import xmind_to_tapd_csv_file
@@ -233,17 +236,30 @@ def index(download_xml=None):
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
-@app.route('/<filename>/to/feishu')
-def download_feishu_file(filename):
+# @app.route('/<filename>/to/feishu')
+# def download_feishu_file(filename):
+#     full_path = join(app.config['UPLOAD_FOLDER'], filename)
+#
+#     if not exists(full_path):
+#         abort(404)
+#
+#     feishu_xmls_file = xmind_to_feishu_csv_file(full_path)
+#     filename = os.path.basename(feishu_xmls_file) if feishu_xmls_file else abort(404)
+#
+#     return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
+
+@app.route('/<filename>/to/feishu_xlsx')
+def download_feishu_xlsx_file(filename):
     full_path = join(app.config['UPLOAD_FOLDER'], filename)
 
     if not exists(full_path):
         abort(404)
 
-    feishu_xmls_file = xmind_to_feishu_csv_file(full_path)
-    filename = os.path.basename(feishu_xmls_file) if feishu_xmls_file else abort(404)
+    feishu_xmls_xlsx_file = xmind_to_feishu_xlsx_file(full_path)
+    filename = os.path.basename(feishu_xmls_xlsx_file) if feishu_xmls_xlsx_file else abort(404)
 
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
+
 
 @app.route('/<filename>/to/testlink')
 def download_testlink_file(filename):

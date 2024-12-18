@@ -6,6 +6,8 @@ from xmind2testcase.zentao import xmind_to_zentao_csv_file
 from xmind2testcase.testlink import xmind_to_testlink_xml_file
 from xmind2testcase.tapd import xmind_to_tapd_csv_file
 from xmind2testcase.feishu import xmind_to_feishu_csv_file
+from xmind2testcase.feishu_xlsx import xmind_to_feishu_xlsx_file
+
 from xmind2testcase.utils import get_absolute_path, xmind_testcase_to_json_file
 from webtool.application import launch
 
@@ -44,9 +46,12 @@ def cli_main():
         elif len(sys.argv) == 3 and sys.argv[2] == '-xml':
             testlink_xml_file = xmind_to_testlink_xml_file(xmind_file)
             logging.info('Convert XMind file to testlink xml files successfully: %s', testlink_xml_file)
-        elif len(sys.argv) == 3 and sys.argv[2] == '-csvfeishu':
-            feishu_csv_file = xmind_to_feishu_csv_file(xmind_file)
-            logging.info('Convert XMind file to feishu csv file successfully: %s', feishu_csv_file)
+        # elif len(sys.argv) == 3 and sys.argv[2] == '-csvfeishu':
+        #     feishu_csv_file = xmind_to_feishu_csv_file(xmind_file)
+        #     logging.info('Convert XMind file to feishu csv file successfully: %s', feishu_csv_file)
+        elif len(sys.argv) == 3 and sys.argv[2] == '-xlsxfeishu':
+            feishu_xlsx_file = xmind_to_feishu_xlsx_file(xmind_file)
+            logging.info('Convert XMind file to feishu xlsx file successfully: %s', feishu_xlsx_file)
         elif len(sys.argv) == 3 and sys.argv[2] == '-csvzentao':
             zentao_csv_file = xmind_to_zentao_csv_file(xmind_file)
             logging.info('Convert XMind file to zentao csv file successfully: %s', zentao_csv_file)
@@ -56,19 +61,22 @@ def cli_main():
         else:
             testlink_json_file = xmind_testcase_to_json_file(xmind_file)
             testlink_xml_file = xmind_to_testlink_xml_file(xmind_file)
-            zentao_csv_file = xmind_to_zentao_csv_file(xmind_file)
             feishu_csv_file = xmind_to_feishu_csv_file(xmind_file)
+            feishu_xlsx_file = xmind_to_feishu_xlsx_file(xmind_file)
+            zentao_csv_file = xmind_to_zentao_csv_file(xmind_file)
             tapd_csv_file = xmind_to_tapd_csv_file(xmind_file)
             logging.info('Convert XMind file successfully: \n'
                          '1、 testcase json file(%s)\n'
                          '2、 testlink xml file(%s)\n'
-                         '3、 feishu csv file(%s)\n',
-                         '4、 zentao csv file(%s)\n',
-                         '5、 zentao csv file(%s)',
+                         # '3、 feishu csv file(%s)\n',
+                         '4、 feishu xlsx file(%s)\n',
+                         '5、 zentao csv file(%s)\n',
+                         '6、 tapd csv file(%s)',
                          testlink_json_file,
                          testlink_xml_file,
+                         # feishu_csv_file,
+                         feishu_xlsx_file,
                          zentao_csv_file,
-                         feishu_csv_file,
                          tapd_csv_file)
     elif len(sys.argv) > 1 and sys.argv[1] == 'webtool':
         if len(sys.argv) == 3:
