@@ -30,7 +30,7 @@ def xmind_to_tapd_csv_file(xmind_file):
         # logging.info('The tapd csv file already exists, return it directly: %s', tapd_file)
         # return tapd_file
 
-    with open(tapd_file, 'w', encoding='utf8') as f:
+    with open(tapd_file, 'w', encoding='utf-8-sig') as f:
         writer = csv.writer(f)
         writer.writerows(tapd_testcase_rows)
         logging.info('Convert XMind file(%s) to a tapd csv file(%s) successfully!', xmind_file, tapd_file)

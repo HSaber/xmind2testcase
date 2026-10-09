@@ -305,9 +305,11 @@ def preview_file(filename):
     testsuites = get_xmind_testsuites(full_path)
     suite_count = 0
     for suite in testsuites:
-        suite_count += len(suite.sub_suites)
+        if hasattr(suite, 'sub_suites') and suite.sub_suites:
+            suite_count += len(suite.sub_suites)
 
     testcases = get_xmind_testcase_list(full_path)
+    
 
     return render_template('preview.html', name=filename, suite=testcases, suite_count=suite_count)
 

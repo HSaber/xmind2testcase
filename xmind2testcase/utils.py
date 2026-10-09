@@ -5,6 +5,7 @@ import os
 import xmind
 import logging
 from xmind2testcase.parser import xmind_to_testsuites
+from xmindparser import xmind_to_dict
 
 
 def get_absolute_path(path):
@@ -25,8 +26,11 @@ def get_absolute_path(path):
 def get_xmind_testsuites(xmind_file):
     """Load the XMind file and parse to `xmind2testcase.metadata.TestSuite` list"""
     xmind_file = get_absolute_path(xmind_file)
-    workbook = xmind.load(xmind_file)
-    xmind_content_dict = workbook.getData()
+    try:
+        xmind_content_dict = xmind_to_dict(xmind_file)
+    except Exception as e:
+        logging.error('Failed to parse XMind file(%s): %s', xmind_file, e)
+        return []
     logging.debug("loading XMind file(%s) dict data: %s", xmind_file, xmind_content_dict)
 
     if xmind_content_dict:
@@ -38,7 +42,7 @@ def get_xmind_testsuites(xmind_file):
 
 
 def get_xmind_testsuite_list(xmind_file):
-    """Load the XMind file and get all testsuite in it
+    """Load the XMind file and get all testsuite in it (支持任意深度层级嵌套)
 
     :param xmind_file: the target XMind file
     :return: a list of testsuite data
@@ -48,30 +52,41 @@ def get_xmind_testsuite_list(xmind_file):
     testsuite_list = get_xmind_testsuites(xmind_file)
     suite_data_list = []
 
-    for testsuite in testsuite_list:
-        product_statistics = {'case_num': 0, 'non_execution': 0, 'pass': 0, 'failed': 0, 'blocked': 0, 'skipped': 0}
-        for sub_suite in testsuite.sub_suites:
-            suite_statistics = {'case_num': len(sub_suite.testcase_list), 'non_execution': 0, 'pass': 0, 'failed': 0, 'blocked': 0, 'skipped': 0}
-            for case in sub_suite.testcase_list:
+    def calculate_statistics(suite):
+        """递归计算节点及其所有子节点的测试用例统计信息"""
+        stats = {'case_num': 0, 'non_execution': 0, 'pass': 0, 'failed': 0, 'blocked': 0, 'skipped': 0}
+        
+        # 1. 统计当前套件直接包含的用例
+        if hasattr(suite, 'testcase_list') and suite.testcase_list:
+            for case in suite.testcase_list:
+                stats['case_num'] += 1
                 if case.result == 0:
-                    suite_statistics['non_execution'] += 1
+                    stats['non_execution'] += 1
                 elif case.result == 1:
-                    suite_statistics['pass'] += 1
+                    stats['pass'] += 1
                 elif case.result == 2:
-                    suite_statistics['failed'] += 1
+                    stats['failed'] += 1
                 elif case.result == 3:
-                    suite_statistics['blocked'] += 1
+                    stats['blocked'] += 1
                 elif case.result == 4:
-                    suite_statistics['skipped'] += 1
+                    stats['skipped'] += 1
                 else:
                     logging.warning('This testcase result is abnormal: %s, please check it: %s', case.result, case.to_dict())
-            sub_suite.statistics = suite_statistics
-            for item in product_statistics:
-                product_statistics[item] += suite_statistics[item]
 
-        testsuite.statistics = product_statistics
-        suite_data = testsuite.to_dict()
-        suite_data_list.append(suite_data)
+        # 2. 递归统计子套件 (sub_suites) 的用例
+        if hasattr(suite, 'sub_suites') and suite.sub_suites:
+            for sub_suite in suite.sub_suites:
+                sub_stats = calculate_statistics(sub_suite)
+                for key in stats:
+                    stats[key] += sub_stats[key]
+
+        suite.statistics = stats
+        return stats
+
+    for testsuite in testsuite_list:
+        # 对每一个根套件进行递归统计
+        calculate_statistics(testsuite)
+        suite_data_list.append(testsuite.to_dict())
 
     logging.info('Convert XMind file(%s) to testsuite data list successfully!', xmind_file)
     return suite_data_list
